@@ -1,100 +1,178 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <title>圆通异常记录</title>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0,user-scalable=no">
     <style>
-        #messageBox {
-            white-space: pre-line;
-            overflow-y: scroll;
-            max-height: 200px;
+          body {
+            /* 设置背景图片 */
+            background-image: url(https://p9.itc.cn/q_70/images01/20230505/9ec6b6a47b9a47cdac2911e672d50558.jpeg); /* 这里的 'background.jpg' 替换为您的图片文件名或URL */
+            background-size: cover; /* 覆盖整个页面 */
+            background-repeat: no-repeat; /* 不重复图片 */
+            background-attachment: fixed; /* 背景图片固定，不随滚动条滚动 */
+        }
+        .button-colorful {
+            background: linear-gradient(to right, #f44336, #ff9800, #ffeb3b, #8bc34a, #4caf50, #2196f3, #3f51b5, #9c27b0);
+            border: none;
+            border-radius: 50px;
+            padding: 10px 30px;
+            font-size: 16px;
+            color: white;
+            cursor: pointer;
+            margin: 10px;
+            transition: 0.3s;
+        }
+
+        .button-colorful:hover {
+            transform: scale(1.05);
+            opacity: 0.9;
+        }
+
+        .centered-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            text-align: center;
+        }
+
+        .button-row {
+            margin-bottom: 20px;
+        }
+
+        .message-container {
+            display: flex;
+            flex-wrap: wrap;
+            max-height: 500px;
+            overflow-y: auto;
             width: 100%;
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+
+        .message-column {
+            flex: 1;
+            min-width: 200px;
+            max-height: 500px;
+            overflow-y: auto;
         }
 
         @media screen and (max-width:640px) {
-            #messageBox {
+            .message-container {
                 max-height: 500px;
-                width: 100%;
+                width: 90%;
             }
         }
     </style>
 </head>
-
 <body>
-    <button id="button1">过光幕异常停机</button>
-    <button id="button2">撞机</button>
-    <button id="button3">人工干预包裹</button>
-    <div id="messageBox"></div>
-    <button id="saveButton">保存记录</button>
-    <button id="clearButton">清除记录</button>
+    <div class="centered-content">
+        <div class="button-row">
+            <button class="button-colorful" id="button1">甩包</button>
+            <button class="button-colorful" id="button2">剔除</button>       
+        </div>
+        <div class="button-row">
+            <button class="button-colorful" id="button3">包裹双抓</button>
+            <button class="button-colorful" id="button4">抽包空抓</button>
+            <button class="button-colorful" id="button5">吸盘卡包</button>
+            <button class="button-colorful" id="button6">碰撞停机</button>
+        </div>
+        <div class="button-row">
+            <button class="button-colorful" id="button7">空抓硬包凹陷</button>
+            <button class="button-colorful" id="button8">空抓软包凹陷</button>
+            <button class="button-colorful" id="button9">空抓包裹破损</button>
+            <button class="button-colorful" id="button10">人工干预包裹</button>
+        </div>
+        <div class="button-row">
+            <button class="button-colorful" id="button11">过光幕异常停机</button>
+            <button class="button-colorful" id="button12">空抓包裹位置变动</button>
+        </div>
+        <div class="message-container" id="messageContainer">
+            <div class="message-column" id="messageColumn1"></div>
+        </div>
+        <button class="button-colorful" id="statisticsButton">统计</button>
+        <button class="button-colorful" id="saveButton">保存记录</button>
+        <button class="button-colorful" id="clearButton">清除记录</button>
+    </div>
 
     <script>
-        const maxRows = 25;
-        const maxColumns = 4; // Number of columns to display
-
-        const messages = Array.from({ length: maxColumns }, () => []);
-        let recordCount = 1;
-        let currentColumn = 0;
-
-        const button1 = document.getElementById("button1");
-        const button2 = document.getElementById("button2");
-        const button3 = document.getElementById("button3");
-        const messageBox = document.getElementById("messageBox");
-        const saveButton = document.getElementById("saveButton");
-        const clearButton = document.getElementById("clearButton");
-
-        button1.addEventListener("click", () => logButton("过光幕异常停机"));
-        button2.addEventListener("click", () => logButton("撞机"));
-        button3.addEventListener("click", () => logButton("人工干预包裹"));
-        saveButton.addEventListener("click", saveRecords);
-        clearButton.addEventListener("click", clearMessages);
+         const buttonLabels = ["甩包", "剔除", "包裹双抓", "抽包空抓", "吸盘卡包", "碰撞停机", "空抓硬包凹陷", "空抓软包凹陷", "空抓包裹破损", "人工干预包裹", "过光幕异常停机", "空抓包裹位置变动"];
+        const counts = {};
+        buttonLabels.forEach(label => counts[label] = 0);
 
         function logButton(buttonName) {
+            counts[buttonName]++;
             const timestamp = new Date().toLocaleString();
-            const message = `${recordCount}, ${buttonName}, ${timestamp}`;
-            messages[currentColumn].push(message);
+            const message = `${buttonName}, ${timestamp}\n`;
+            appendMessageToColumn(message);
+        }
 
-            if (messages[currentColumn].length > maxRows) {
-                messages[currentColumn].shift(); // Remove the oldest message when exceeding the limit
+        function showStatistics() {
+            let summary = "";
+            buttonLabels.forEach(label => {
+                summary += `${label}: ${counts[label]}次\n`;
+            });
+            alert(summary.trim());
+        }
+
+        document.getElementById("statisticsButton").addEventListener("click", showStatistics);
+
+        buttonLabels.forEach((label, index) => {
+            const button = document.getElementById(`button${index + 1}`);
+            if (button) {
+                button.addEventListener("click", () => logButton(label));
             }
+        });
 
-            updateMessageBox();
-            recordCount++;
-            currentColumn = (currentColumn + 1) % maxColumns; // Cycle through columns
+        function appendMessageToColumn(message) {
+            let lastColumn = document.querySelector('.message-column:last-child');
+            if (lastColumn.childElementCount >= 25) {
+                lastColumn = createNewColumn();
+            }
+            const messageElement = document.createElement('div');
+            messageElement.textContent = message;
+            lastColumn.appendChild(messageElement);
         }
 
-        function updateMessageBox() {
-            messageBox.textContent = messages.map(columnMessages => columnMessages.join("\n")).join("\n\n");
+        function createNewColumn() {
+            const newColumn = document.createElement('div');
+            newColumn.classList.add('message-column');
+            document.getElementById('messageContainer').appendChild(newColumn);
+            return newColumn;
         }
 
-        function saveRecords() {
-            let csvContent = "序号, 异常形式, 时间\n";
-            for (const columnMessages of messages) {
-                columnMessages.forEach((message) => {
-                    csvContent += message + "\n";
+        document.getElementById("saveButton").addEventListener("click", function() {
+            let csvContent = "序号,异常形式,时间显示\n";
+            const messageColumns = document.querySelectorAll('.message-column');
+            let index = 1;
+            messageColumns.forEach(column => {
+                Array.from(column.children).forEach(messageElement => {
+                    const message = messageElement.textContent.trim();
+                    if (message) {
+                        csvContent += `${index},${message.replace(", ", ",")}\n`;
+                        index++;
+                    }
                 });
-            }
+            });
 
-            const blob = new Blob([csvContent], { type: "text/csv" });
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement("a");
             const url = URL.createObjectURL(blob);
-            const a = document.createElement("a");
-            a.href = url;
-            a.download = "records.csv";
-            a.click();
-        }
-
-        function clearMessages() {
-            for (const columnMessages of messages) {
-                columnMessages.length = 0;
-            }
-            updateMessageBox();
-            recordCount = 1;
-            currentColumn = 0;
-        }
+            link.setAttribute("href", url);
+            link.setAttribute("download", "record.csv");
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
+          document.getElementById("clearButton").addEventListener("click", function() {
+            document.getElementById("messageContainer").innerHTML = '<div class="message-column" id="messageColumn1"></div>';
+            buttonLabels.forEach(label => counts[label] = 0);
+        });
     </script>
 </body>
-
 </html>
