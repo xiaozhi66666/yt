@@ -1,178 +1,206 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
+
 <html>
 <head>
-    <title>圆通异常记录</title>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0,user-scalable=no">
-    <style>
-          body {
-            /* 设置背景图片 */
-            background-image: url(https://p9.itc.cn/q_70/images01/20230505/9ec6b6a47b9a47cdac2911e672d50558.jpeg); /* 这里的 'background.jpg' 替换为您的图片文件名或URL */
-            background-size: cover; /* 覆盖整个页面 */
-            background-repeat: no-repeat; /* 不重复图片 */
-            background-attachment: fixed; /* 背景图片固定，不随滚动条滚动 */
-        }
-        .button-colorful {
-            background: linear-gradient(to right, #f44336, #ff9800, #ffeb3b, #8bc34a, #4caf50, #2196f3, #3f51b5, #9c27b0);
-            border: none;
-            border-radius: 50px;
-            padding: 10px 30px;
-            font-size: 16px;
-            color: white;
-            cursor: pointer;
-            margin: 10px;
-            transition: 0.3s;
-        }
+<title>圆通异常记录</title>
+<meta charset="utf-8"/>
+<meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible"/>
+<meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0,user-scalable=no" name="viewport"/>
+<style>
+	body {
+		background-image: url(https://p9.itc.cn/q_70/images01/20230505/9ec6b6a47b9a47cdac2911e672d50558.jpeg);
+		background-size: cover;
+		background-repeat: no-repeat;
+		background-attachment: fixed;
+		overflow-x: hidden;
+	}
+	.button-colorful {
+		background: linear-gradient(to right, #f44336, #ff9800, #ffeb3b, #8bc34a, #4caf50, #2196f3, #3f51b5, #9c27b0);
+		border: none;
+		border-radius: 50px;
+		padding: 10px 30px;
+		font-size: 16px;
+		color: white;
+		cursor: pointer;
+		margin: 8px;
+		transition: 0.3s;
+	}
 
-        .button-colorful:hover {
-            transform: scale(1.05);
-            opacity: 0.9;
-        }
+	.button-colorful:hover {
+		transform: scale(1.05);
+		opacity: 0.9;
+	}
 
-        .centered-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            text-align: center;
-        }
+	.centered-content {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		height: 100vh;
+		text-align: center;
+	}
 
-        .button-row {
-            margin-bottom: 20px;
-        }
-
-        .message-container {
-            display: flex;
-            flex-wrap: wrap;
-            max-height: 500px;
-            overflow-y: auto;
-            width: 100%;
-            margin-top: 20px;
-            padding: 10px;
-            border: 1px solid #ddd;
-        }
-
-        .message-column {
-            flex: 1;
-            min-width: 200px;
-            max-height: 500px;
-            overflow-y: auto;
-        }
-
-        @media screen and (max-width:640px) {
-            .message-container {
-                max-height: 500px;
-                width: 90%;
-            }
-        }
-    </style>
+	.button-row {
+		margin-bottom: 20px;
+	}
+	.message-container {
+		display: block;
+		width: 100%;
+		min-height: 40px;
+		line-height: 40px;
+		margin: 10px 0 20px 0;
+		border: 1px solid #ddd;
+	}
+	.message-column {
+		color: red;
+	}
+	@media screen and (max-width:640px) {
+		.button-row {
+			margin-bottom: 0;
+		}
+		.message-container {
+			margin: 10px 0 10px 0;
+		}
+	}
+</style>
 </head>
 <body>
-    <div class="centered-content">
-        <div class="button-row">
-            <button class="button-colorful" id="button1">甩包</button>
-            <button class="button-colorful" id="button2">剔除</button>       
-        </div>
-        <div class="button-row">
-            <button class="button-colorful" id="button3">包裹双抓</button>
-            <button class="button-colorful" id="button4">抽包空抓</button>
-            <button class="button-colorful" id="button5">吸盘卡包</button>
-            <button class="button-colorful" id="button6">碰撞停机</button>
-        </div>
-        <div class="button-row">
-            <button class="button-colorful" id="button7">空抓硬包凹陷</button>
-            <button class="button-colorful" id="button8">空抓软包凹陷</button>
-            <button class="button-colorful" id="button9">空抓包裹破损</button>
-            <button class="button-colorful" id="button10">人工干预包裹</button>
-        </div>
-        <div class="button-row">
-            <button class="button-colorful" id="button11">过光幕异常停机</button>
-            <button class="button-colorful" id="button12">空抓包裹位置变动</button>
-        </div>
-        <div class="message-container" id="messageContainer">
-            <div class="message-column" id="messageColumn1"></div>
-        </div>
-        <button class="button-colorful" id="statisticsButton">统计</button>
-        <button class="button-colorful" id="saveButton">保存记录</button>
-        <button class="button-colorful" id="clearButton">清除记录</button>
-    </div>
+<div class="centered-content">
+<div class="button-row">
+<button class="button-colorful" id="button1">甩包</button>
+<button class="button-colorful" id="button2">剔除</button>
+</div>
+<div class="button-row">
+<button class="button-colorful" id="button3">包裹双抓</button>
+<button class="button-colorful" id="button4">抽包空抓</button>
+<button class="button-colorful" id="button5">吸盘卡包</button>
+<button class="button-colorful" id="button6">碰撞停机</button>
+</div>
+<div class="button-row">
+<button class="button-colorful" id="button7">空抓硬包凹陷</button>
+<button class="button-colorful" id="button8">空抓软包凹陷</button>
+<button class="button-colorful" id="button9">空抓包裹破损</button>
+<button class="button-colorful" id="button10">人工干预包裹</button>
+</div>
+<div class="button-row">
+<button class="button-colorful" id="button11">过光幕异常停机</button>
+<button class="button-colorful" id="button12">空抓包裹位置变动</button>
+</div>
+<div class="message-container">
+	<div class="message-column"></div>
+</div>
+<button class="button-colorful" id="statisticsButton">统计</button>
 
-    <script>
-         const buttonLabels = ["甩包", "剔除", "包裹双抓", "抽包空抓", "吸盘卡包", "碰撞停机", "空抓硬包凹陷", "空抓软包凹陷", "空抓包裹破损", "人工干预包裹", "过光幕异常停机", "空抓包裹位置变动"];
-        const counts = {};
-        buttonLabels.forEach(label => counts[label] = 0);
 
-        function logButton(buttonName) {
-            counts[buttonName]++;
-            const timestamp = new Date().toLocaleString();
-            const message = `${buttonName}, ${timestamp}\n`;
-            appendMessageToColumn(message);
-        }
+<div class="button-row"><button class="button-colorful" id="saveButton">保存记录</button><button class="button-colorful" id="clearButton">清除记录</button></div><div class="button-row"><button class="button-colorful" id="carWaitButton">小车等待</button><input id="carWaitInput" type="text"/></div><div class="button-row"><button class="button-colorful" id="stopTimeButton">停机等待</button><input id="stopTimeInput" type="text"/></div></div>
+<script>
+const getColumn = document.querySelector('.message-column');
+const buttonLabels = ["甩包", "剔除", "包裹双抓", "抽包空抓", "吸盘卡包", "碰撞停机", "空抓硬包凹陷", "空抓软包凹陷", "空抓包裹破损", "人工干预包裹", "过光幕异常停机", "空抓包裹位置变动", "小车等待", "停机等待"];
+let msgCount = {};
+var msgList = [];
+var cacheData = localStorage.getItem("cacheData");
+if(cacheData){
+	cacheData = JSON.parse(cacheData);
+	msgList = cacheData.msgList;
+	buttonLabels.forEach(label => msgCount[label] = cacheData.msgCount[label]);
+	if(msgList.length > 0){
+		getColumn.innerHTML = msgList[msgList.length - 1];
+	}
+	console.log(cacheData)
+}else{
+	buttonLabels.forEach(label => msgCount[label] = 0);
+}
+console.log(msgCount, msgList)
 
-        function showStatistics() {
-            let summary = "";
-            buttonLabels.forEach(label => {
-                summary += `${label}: ${counts[label]}次\n`;
-            });
-            alert(summary.trim());
-        }
+function logButton(buttonName) {
+	msgCount[buttonName]++;
+	const timestamp = new Date().toLocaleString();
+	const message = `${buttonName}, ${timestamp}\n`;
+	appendMessageToColumn(message);
+	setCache();
+}
 
-        document.getElementById("statisticsButton").addEventListener("click", showStatistics);
+function showStatistics() {
+	let summary = "";
+	buttonLabels.forEach(label => {
+		summary += `${label}: ${msgCount[label]}次\n`;
+	});
+	alert(summary.trim());
+}
 
-        buttonLabels.forEach((label, index) => {
-            const button = document.getElementById(`button${index + 1}`);
-            if (button) {
-                button.addEventListener("click", () => logButton(label));
-            }
-        });
+document.getElementById("statisticsButton").addEventListener("click", showStatistics);
 
-        function appendMessageToColumn(message) {
-            let lastColumn = document.querySelector('.message-column:last-child');
-            if (lastColumn.childElementCount >= 25) {
-                lastColumn = createNewColumn();
-            }
-            const messageElement = document.createElement('div');
-            messageElement.textContent = message;
-            lastColumn.appendChild(messageElement);
-        }
+buttonLabels.forEach((label, index) => {
+	const button = document.getElementById(`button${index + 1}`);
+	if (button) {
+		button.addEventListener("click", () => logButton(label));
+	}
+});
 
-        function createNewColumn() {
-            const newColumn = document.createElement('div');
-            newColumn.classList.add('message-column');
-            document.getElementById('messageContainer').appendChild(newColumn);
-            return newColumn;
-        }
+function appendMessageToColumn(message) {
+	msgList.push(message)
+	getColumn.innerHTML = message;
+	setCache();
+	console.log(message)
+}
 
-        document.getElementById("saveButton").addEventListener("click", function() {
-            let csvContent = "序号,异常形式,时间显示\n";
-            const messageColumns = document.querySelectorAll('.message-column');
-            let index = 1;
-            messageColumns.forEach(column => {
-                Array.from(column.children).forEach(messageElement => {
-                    const message = messageElement.textContent.trim();
-                    if (message) {
-                        csvContent += `${index},${message.replace(", ", ",")}\n`;
-                        index++;
-                    }
-                });
-            });
+function setCache(){
+	const setData = JSON.stringify({
+		msgList: msgList,
+		msgCount: msgCount
+	});
+	localStorage.setItem("cacheData", setData);
+}
 
-            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement("a");
-            const url = URL.createObjectURL(blob);
-            link.setAttribute("href", url);
-            link.setAttribute("download", "record.csv");
-            link.style.visibility = 'hidden';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        });
-          document.getElementById("clearButton").addEventListener("click", function() {
-            document.getElementById("messageContainer").innerHTML = '<div class="message-column" id="messageColumn1"></div>';
-            buttonLabels.forEach(label => counts[label] = 0);
-        });
-    </script>
+document.getElementById("saveButton").addEventListener("click", function() {
+	let csvContent = "序号,异常形式,时间显示\n";
+	let index = 1;
+	msgList.forEach(column => {
+		if (column) {
+			column = column.trim();
+			csvContent += `${index},${column.replace(", ", ",")}\n`;
+			index++;
+		}
+	});
+	console.log(csvContent)
+	const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+	const link = document.createElement("a");
+	const url = URL.createObjectURL(blob);
+	link.setAttribute("href", url);
+	link.setAttribute("download", "record.csv");
+	link.style.visibility = 'hidden';
+	document.body.appendChild(link);
+	link.click();
+	document.body.removeChild(link);
+});
+document.getElementById("clearButton").addEventListener("click", function() {
+	getColumn.innerHTML = '';
+	buttonLabels.forEach(label => msgCount[label] = 0);
+	msgList = [];
+	localStorage.removeItem("cacheData");
+});
+    
+document.getElementById("carWaitButton").addEventListener("click", function() {
+    msgCount['小车等待']++;
+    const input = document.getElementById("carWaitInput").value;
+    const message = "小车等待: " + input+ " " + new Date().toLocaleTimeString();
+    appendMessageToColumn(message);
+	setCache();
+    addToCSV(message);
+});
+
+document.getElementById("stopTimeButton").addEventListener("click", function() {
+    msgCount['停机等待']++;
+    const input = document.getElementById("stopTimeInput").value;
+    const message = "停机等待: " + input+" " + new Date().toLocaleTimeString();
+    appendMessageToColumn(message);
+	setCache();
+    addToCSV(message);
+});
+
+function addToCSV(message) {
+    console.log(message);
+}
+</script>
 </body>
 </html>
